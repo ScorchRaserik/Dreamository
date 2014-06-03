@@ -23,7 +23,7 @@
 
 	//globals
 	var platforms;
-	var horizontalSpeed = 0;
+	var canJump = true;
 
 	function create(){
 
@@ -47,10 +47,10 @@
     	//Set up player
     	player = game.add.sprite(32, game.world.height - 100, 'player');
     	game.physics.arcade.enable(player);
-    	player.body.gravity.y = 400;
+    	player.body.gravity.y = 4000;
     	player.body.collideWorldBounds = true;
     	player.body.drag.set(2000);
-    	player.body.maxVelocity.setTo(400, 400);
+    	player.body.maxVelocity.setTo(400, 2000);
 
     	//Controls
     	button = game.input.keyboard.createCursorKeys();
@@ -62,18 +62,15 @@
 	function update(){
 		game.physics.arcade.collide(player, platforms);
 
+		//Horizontal movement
 		if(button.left.isDown)
     	{
         	//Move to the left
-
-        	//player.body.velocity.x = -150;
         	player.body.acceleration.x = -2000;
 	    }
 	    else if(button.right.isDown)
 	    {
 	        //Move to the right
-
-	        //player.body.velocity.x = 150;
         	player.body.acceleration.x = 2000;
 	    }
 	    else
@@ -81,6 +78,22 @@
 	        //Stop
         	player.body.acceleration.x = 0;
 	    }
+
+	    //Vertical movement
+	    if(button.up.isDown && canJump == true)
+	    {
+	    	player.body.velocity.y = -1000;
+	    }
+
+	    if(button.up.duration >= 250 || player.body.touching.up)
+	    {
+	    	canJump = false;
+	    }
+
+	    if(player.body.touching.down && button.up.isUp)
+		{
+			canJump = true;
+		}
 
 	    testText.text = 'Speed: ' + player.body.velocity.x;
 	}
