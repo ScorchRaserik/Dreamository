@@ -1,0 +1,90 @@
+<!doctype html> 
+<html lang="en">
+<head> 
+	<meta charset="UTF-8" />
+    <title>Phaser - Making your first game, part 9</title>
+	<script type="text/javascript" src="js/phaser.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+
+	var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+	function preload() {
+		game.load.image('sky', 'assets/background.png');
+    	game.load.image('ground', 'assets/ground.png');
+    	game.load.image('player', 'assets/player.png');
+	}
+
+	//globals
+	var platforms;
+	var horizontalSpeed = 0;
+
+	function create(){
+
+		//Add objects
+		game.add.sprite(0, 0, 'sky');
+		platforms = game.add.group();
+		
+		//Physics setup
+		game.physics.startSystem(Phaser.Physics.ARCADE);
+		platforms.enableBody = true;
+
+		//Build world
+		var ground = platforms.create(0, game.world.height - 50, 'ground');
+		var ledge1 = platforms.create(0, 300, 'ground');
+		var ledge2 = platforms.create(400, 200, 'ground');
+		ground.scale.setTo(4, 2);
+		ground.body.immovable = true;
+    	ledge1.body.immovable = true;
+    	ledge2.body.immovable = true;
+
+    	//Set up player
+    	player = game.add.sprite(32, game.world.height - 100, 'player');
+    	game.physics.arcade.enable(player);
+    	player.body.gravity.y = 400;
+    	player.body.collideWorldBounds = true;
+    	player.body.drag.set(2000);
+    	player.body.maxVelocity.setTo(400, 400);
+
+    	//Controls
+    	button = game.input.keyboard.createCursorKeys();
+
+    	//DebugText
+    	testText = game.add.text(16, 16, '', { fontSize: '16px', fill: '#000' });
+	}
+
+	function update(){
+		game.physics.arcade.collide(player, platforms);
+
+		if(button.left.isDown)
+    	{
+        	//Move to the left
+
+        	//player.body.velocity.x = -150;
+        	player.body.acceleration.x = -2000;
+	    }
+	    else if(button.right.isDown)
+	    {
+	        //Move to the right
+
+	        //player.body.velocity.x = 150;
+        	player.body.acceleration.x = 2000;
+	    }
+	    else
+	    {
+	        //Stop
+        	player.body.acceleration.x = 0;
+	    }
+
+	    testText.text = 'Speed: ' + player.body.velocity.x;
+	}
+
+</script>
+</body>
+</html>
