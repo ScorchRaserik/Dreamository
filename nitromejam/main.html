@@ -19,11 +19,14 @@
 		game.load.image('sky', 'assets/background.png');
     	game.load.image('ground', 'assets/ground.png');
     	game.load.image('player', 'assets/player.png');
+    	game.load.image('shot', 'assets/shot.png');
 	}
 
 	//globals
 	var platforms;
 	var canJump = true;
+	var nextFire = 0;
+	var fireRate = 100;
 	var PLAYER_SCALE = 1.0;
 
 	function create(){
@@ -52,6 +55,16 @@
     	player.body.collideWorldBounds = true;
     	player.body.drag.set((3500 * PLAYER_SCALE), (2000 * PLAYER_SCALE));
     	player.body.maxVelocity.setTo((750 * PLAYER_SCALE), (2000 * PLAYER_SCALE));
+
+    	//Set up bullets
+	    bullets = game.add.group();
+	    bullets.enableBody = true;
+	    bullets.physicsBodyType = Phaser.Physics.ARCADE;
+	    bullets.createMultiple(30, 'shot', 0, false);
+	    bullets.setAll('anchor.x', 0.5);
+	    bullets.setAll('anchor.y', 0.5);
+	    bullets.setAll('outOfBoundsKill', true);
+	    bullets.setAll('checkWorldBounds', true);
 
     	//Controls
     	button = game.input.keyboard.createCursorKeys();
@@ -108,6 +121,27 @@
 		{
 			canJump = true;
 		}
+
+		//Mouse click
+		if (game.input.activePointer.isDown)
+	    {
+	        fire();
+	    }
+	}
+
+	function fire () {
+
+	    if (game.time.now > nextFire && bullets.countDead() > 0)
+	    {
+	        nextFire = game.time.now + fireRate;
+
+	        var bullet = bullets.getFirstExists(false);
+
+	        bullet.reset(player.x + player.body.halfWidth, player.y + player.body.halfHeight);
+
+	        bullet.rotation = game.physics.arcade.moveToPointer(bullet, 1000, game.input.activePointer, 500);
+	    }
+
 	}
 
 </script>
