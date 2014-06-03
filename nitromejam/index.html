@@ -1,0 +1,26 @@
+<!doctype html> 
+<html lang="en">
+<head> 
+	<meta charset="UTF-8" />
+    <title>Dreaming</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+    <script type="text/javascript" src="js/phaser.min.js"></script>
+    <!-- <script type="text/javascript" src="js/Intro.js"></script> -->
+    <script type="text/javascript" src="js/Main.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+
+(function() {
+	var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'game');
+	game.state.add('Main', Dream.Main);
+	game.state.start('Main');
+})();
+
+</script>
+</body>
+</html>
