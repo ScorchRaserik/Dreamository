@@ -40,7 +40,7 @@ Dream.Main.prototype = {
 	    clouds = this.game.add.group();
 	   	clouds.enableBody = true;
 
-	    for (var i = 0; i < 5; i++) 
+	    for (var i = 0; i < 1000; i++) 
 	    {
 	    	// create a star inside of the 'stars' group
 			var star = clouds.create(i * 225, 50 + (Math.random() * 140), 'cloud');
@@ -49,7 +49,7 @@ Dream.Main.prototype = {
 			star.body.gravity.x = 0;
 
 			// this gives each star a slightly random bounce value
-			star.body.velocity.x = -10 - (Math.random() * 20);
+			star.body.velocity.x = -10 - (Math.random() * 15);
 	    }
 
 		//Set up player
