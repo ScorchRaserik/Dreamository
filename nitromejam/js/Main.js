@@ -1,31 +1,31 @@
-var Dream = {};
 Dream.Main = function(game) {
 	platforms = null;
 	canJump = true;
 	nextFire = 0;
 	fireRate = 100;
 	PLAYER_SCALE = 1.0;
+	nextCloud = 0;
+	cloudRate = 10000;
 };
 
 Dream.Main.prototype = {
-
-	preload: function() {
-		this.load.image('sky', 'assets/background.png');
-		this.load.image('ground', 'assets/ground.png');
-		this.load.image('player', 'assets/player.png');
-		this.load.image('shot', 'assets/shot.png');
-		this.load.image('cloud', 'assets/cloud1.png');
-	},
 
 	create: function() {
 
 		//Add objects
 		this.add.sprite(0, 0, 'sky');
 		platforms = this.game.add.group();
-		
+		clouds = this.game.add.group();
+
 		//Physics setup
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		platforms.enableBody = true;
+		clouds.enableBody = true;
+
+		//Set up clouds
+		clouds.createMultiple(30, 'cloud', 0, false);
+	   	clouds.setAll('outOfBoundsKill', true);
+	   	clouds.setAll('checkWorldBounds', true);
 
 		//Build world
 		ground = platforms.create(0, this.game.world.height - 50, 'ground');
@@ -36,21 +36,6 @@ Dream.Main.prototype = {
 		ledge1.body.immovable = true;
 		ledge2.body.immovable = true;
 
-		//Set up clouds
-	    clouds = this.game.add.group();
-	   	clouds.enableBody = true;
-
-	    for (var i = 0; i < 1000; i++) 
-	    {
-	    	// create a star inside of the 'stars' group
-			var star = clouds.create(i * 225, 50 + (Math.random() * 140), 'cloud');
-
-			// let gravity do its thing
-			star.body.gravity.x = 0;
-
-			// this gives each star a slightly random bounce value
-			star.body.velocity.x = -10 - (Math.random() * 15);
-	    }
 
 		//Set up player
 		player = this.add.sprite(32, this.game.world.height - 100, 'player');
@@ -76,6 +61,12 @@ Dream.Main.prototype = {
 
 	update: function() {
 		this.game.physics.arcade.collide(player, platforms);
+
+		if(this.game.time.now > nextCloud)
+		{
+			this.spawnCloud();
+		}
+
 
 		//Horizontal movement
 		if(button.left.isDown)
@@ -138,7 +129,21 @@ Dream.Main.prototype = {
 	        bullet.reset(player.x + player.body.halfWidth, player.y + player.body.halfHeight);
 	        bullet.rotation = this.game.physics.arcade.moveToPointer(bullet, 1200, this.game.input.activePointer);
 	    }
+	},
+
+	spawnCloud: function() {
+		nextCloud = this.game.time.now + cloudRate;
+		cloud = clouds.getFirstExists(false);
+		cloud.reset(549, 50 + (Math.random() * 140), 'cloud');
+		cloud.body.gravity.x = 0;
+		cloud.body.velocity.x = -10 - (Math.random() * 15);
+		cloudScale = Math.random() * 2; 
+		cloud.scale.setTo(cloudScale, cloudScale);
+	},
+
+	render: function() {
+		//this.game.debug.text('test', 50,50);
 	}
 
-	
+
 };
