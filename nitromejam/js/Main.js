@@ -28,18 +28,19 @@ Dream.Main.prototype = {
 	   	clouds.setAll('checkWorldBounds', true);
 
 		//Build world
-		ground = platforms.create(0, this.game.world.height - 50, 'ground');
-		ledge1 = platforms.create(0, 400, 'ground');
-		ledge2 = platforms.create(450, 250, 'ground');
-		ground.scale.setTo(4, 2);
+		ground = platforms.create(0, this.game.world.height - 45, 'ground');
+		//ledge1 = platforms.create(0, 400, 'ground');
+		//ledge2 = platforms.create(450, 250, 'ground');
+		//ground.scale.setTo(4, 2);
 		ground.body.immovable = true;
-		ledge1.body.immovable = true;
-		ledge2.body.immovable = true;
+		//ledge1.body.immovable = true;
+		//ledge2.body.immovable = true;
 
 
 		//Set up player
-		player = this.add.sprite(32, this.game.world.height - 100, 'player');
+		player = this.add.sprite(226, this.game.world.height - 100, 'player');
 		this.game.physics.arcade.enable(player);
+		//this,game.camera.follow(player);
 		player.body.gravity.y = 5000 * PLAYER_SCALE;
 		player.body.collideWorldBounds = true;
 		player.body.drag.set((3500 * PLAYER_SCALE), (2000 * PLAYER_SCALE));
@@ -134,10 +135,10 @@ Dream.Main.prototype = {
 	spawnCloud: function() {
 		nextCloud = this.game.time.now + cloudRate;
 		cloud = clouds.getFirstExists(false);
-		cloud.reset(549, 50 + (Math.random() * 140), 'cloud');
+		cloud.reset(549, 30 + (Math.random() * 120), 'cloud');
 		cloud.body.gravity.x = 0;
-		cloud.body.velocity.x = -10 - (Math.random() * 15);
-		cloudScale = Math.random() * 2; 
+		cloud.body.velocity.x = -15 - (Math.random() * 15);
+		cloudScale = Math.random() + .6; 
 		cloud.scale.setTo(cloudScale, cloudScale);
 	},
 
