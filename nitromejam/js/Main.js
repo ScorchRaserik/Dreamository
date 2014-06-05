@@ -110,10 +110,7 @@ Dream.Main.prototype = {
 		}
 
 		//Mouse click
-		if (this.game.input.activePointer.isDown)
-	    {
-	        this.fire();
-	    }
+		this.game.input.onDown.add(this.fire, this);
 	},
 
 	fire: function() {
@@ -122,7 +119,7 @@ Dream.Main.prototype = {
 	        nextFire = this.game.time.now + fireRate;
 	        bullet = bullets.getFirstExists(false);
 	        bullet.reset(player.x + player.body.halfWidth, player.y + player.body.halfHeight);
-	        bullet.rotation = this.game.physics.arcade.moveToPointer(bullet, 500, this.game.input.activePointer);
+	        bullet.rotation = this.game.physics.arcade.moveToPointer(bullet, 1200, this.game.input.activePointer);
 	    }
 	}
 
