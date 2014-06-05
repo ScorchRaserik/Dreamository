@@ -56,13 +56,23 @@ Dream.Main.prototype = {
 	    bullets.setAll('outOfBoundsKill', true);
 	    bullets.setAll('checkWorldBounds', true);
 
+	    //targetting
+	    target = this.add.sprite(this.game.input.x, this.game.input.y, 'target');
+
+
 		//Controls
 		button = this.game.input.keyboard.createCursorKeys();
 	},
 
 	update: function() {
+		//Collision detection
 		this.game.physics.arcade.collide(player, platforms);
 
+		//Use reticule for mouse
+		target.x = this.game.input.x - 10;
+		target.y = this.game.input.y - 10;
+
+		//Spawn clouds
 		if(this.game.time.now > nextCloud)
 		{
 			this.spawnCloud();
@@ -137,8 +147,13 @@ Dream.Main.prototype = {
 		cloud = clouds.getFirstExists(false);
 		cloud.reset(549, 30 + (Math.random() * 120), 'cloud');
 		cloud.body.gravity.x = 0;
+<<<<<<< HEAD
 		cloud.body.velocity.x = -15 - (Math.random() * 15);
 		cloudScale = Math.random() + .6; 
+=======
+		cloud.body.velocity.x = -10 - (Math.random() * 15);
+		cloudScale = Math.random() + 0.6; 
+>>>>>>> FETCH_HEAD
 		cloud.scale.setTo(cloudScale, cloudScale);
 	},
 

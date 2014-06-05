@@ -10,6 +10,7 @@ Dream.Menu.prototype = {
 		this.load.image('player', 'assets/player.png');
 		this.load.image('shot', 'assets/shot.png');
 		this.load.image('cloud', 'assets/cloud1.png');
+		this.load.image('target', 'assets/reticule.png');
 	},
 
 	create: function() {
