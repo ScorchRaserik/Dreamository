@@ -14,6 +14,7 @@ Dream.Main.prototype = {
 		this.load.image('ground', 'assets/ground.png');
 		this.load.image('player', 'assets/player.png');
 		this.load.image('shot', 'assets/shot.png');
+		this.load.image('cloud', 'assets/cloud1.png');
 	},
 
 	create: function() {
@@ -34,6 +35,22 @@ Dream.Main.prototype = {
 		ground.body.immovable = true;
 		ledge1.body.immovable = true;
 		ledge2.body.immovable = true;
+
+		//Set up clouds
+	    clouds = this.game.add.group();
+	   	clouds.enableBody = true;
+
+	    for (var i = 0; i < 5; i++) 
+	    {
+	    	// create a star inside of the 'stars' group
+			var star = clouds.create(i * 225, 50 + (Math.random() * 140), 'cloud');
+
+			// let gravity do its thing
+			star.body.gravity.x = 0;
+
+			// this gives each star a slightly random bounce value
+			star.body.velocity.x = -10 - (Math.random() * 20);
+	    }
 
 		//Set up player
 		player = this.add.sprite(32, this.game.world.height - 100, 'player');
