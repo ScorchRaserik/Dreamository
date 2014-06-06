@@ -101,13 +101,9 @@ Dream.Main.prototype = {
 		this.game.physics.arcade.collide(player, platforms);
 
 		//Use reticule for mouse
-<<<<<<< HEAD
+
 		target.cameraOffset.x = this.game.input.x - 22;
 		target.cameraOffset.y = this.game.input.y - 12;
-=======
-		target.x = this.game.input.x - 22;
-		target.y = this.game.input.y - 12;
->>>>>>> 05def91f968c594a1c4e2dac526abdf233e5b68e
 
 		//Spawn clouds
 		if(this.game.time.now > nextCloud)
