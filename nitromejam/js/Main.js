@@ -3,7 +3,7 @@ Dream.Main = function(game) {
 	canJump = true;
 	nextFire = 0;
 	fireRate = 100;
-	PLAYER_SCALE = 1.0;
+	PLAYER_SCALE = 0.6;
 	nextCloud = 0;
 	nextMountain = 0;
 	cloudRate = 10000;
@@ -13,8 +13,11 @@ Dream.Main.prototype = {
 
 	create: function() {
 
+		// Make the world larger than the boundaries
+		this.game.world.setBounds(0, 0, 2200, 0);
+
 		//Add objects
-		this.add.sprite(0, 0, 'sky');
+		this.add.tileSprite(0, 0, 2200, 550, 'sky');
 		clouds = this.game.add.group();
 		mountains = this.game.add.group();
 		platforms = this.game.add.group();
@@ -38,7 +41,7 @@ Dream.Main.prototype = {
 	   	mountains.setAll('checkWorldBounds', true);
 
 	   	//3 clouds spawn at once
-	   	for (var i = 0; i < 3; i++) 
+	   	for (var i = 0; i < 18; i++) 
 	    {
 	    	// create a star inside of the 'stars' group
 			var cloudTemp = clouds.create(i * 225, 50 + (Math.random() * 140), 'cloud');
@@ -51,7 +54,7 @@ Dream.Main.prototype = {
 	    }
 
 	  	//5 mountains spawn at once
-	   	for (var i = 0; i < 5; i++) 
+	   	for (var i = 0; i < 30; i++) 
 	    {
 			var mTemp = mountains.create(((i-1) * 120) + (Math.random() * 2), this.game.world.height - 245 + (Math.random() * 60), 'mountain');
 
@@ -66,8 +69,9 @@ Dream.Main.prototype = {
 
 		//Set up player
 		player = this.add.sprite(226, this.game.world.height - 100, 'player');
+		player.anchor.setTo(0.5, 0.5);
 		this.game.physics.arcade.enable(player);
-		//this,game.camera.follow(player);
+		this.game.camera.follow(player, Phaser.Camera.FOLLOW_PLATFORMER);
 		player.body.gravity.y = 5000 * PLAYER_SCALE;
 		player.body.collideWorldBounds = true;
 		player.body.drag.set((3500 * PLAYER_SCALE), (2000 * PLAYER_SCALE));
@@ -178,7 +182,7 @@ Dream.Main.prototype = {
 	spawnCloud: function() {
 		nextCloud = this.game.time.now + cloudRate;
 		cloud = clouds.getFirstExists(false);
-		cloud.reset(549, 30 + (Math.random() * 120), 'cloud');
+		cloud.reset(2199, 30 + (Math.random() * 120), 'cloud');
 		cloud.body.gravity.x = 0;
 		cloud.body.velocity.x = -15 - (Math.random() * 15);
 		cloudScale = Math.random() + .6; 
@@ -188,7 +192,7 @@ Dream.Main.prototype = {
 	spawnMountain: function() {
 		nextMountain = this.game.time.now + (cloudRate-7150);
 		mountain = mountains.getFirstExists(false);
-		mountain.reset(549, this.game.world.height-250, 'mountain');
+		mountain.reset(2199, this.game.world.height-250, 'mountain');
 		mountain.body.gravity.x = 0;
 		mountain.body.velocity.x = -45 - (Math.random() * 8);
 		mountainScale = ((Math.random()/2.75) + 1); 
