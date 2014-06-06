@@ -6,11 +6,12 @@ Dream.Menu.prototype = {
 	preload: function() {
 		this.load.image('menu', 'assets/menu.png');
 		this.load.image('sky', 'assets/background.png');
-		this.load.image('ground', 'assets/ground.png');
+		this.load.image('ground', 'assets/train.png');
 		this.load.image('player', 'assets/player.png');
 		this.load.image('shot', 'assets/shot.png');
 		this.load.image('cloud', 'assets/cloud1.png');
 		this.load.image('target', 'assets/reticule.png');
+		this.load.image('mountain', 'assets/mountain.png');
 	},
 
 	create: function() {
