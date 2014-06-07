@@ -7,6 +7,7 @@ Dream.Main = function(game) {
 	nextCloud = 0;
 	nextMountain = 0;
 	cloudRate = 10000;
+	fall = 0;
 };
 
 Dream.Main.prototype = {
@@ -17,7 +18,7 @@ Dream.Main.prototype = {
 		this.game.world.setBounds(0, 0, 2200, 0);
 
 		//Add objects
-		this.add.tileSprite(0, 0, 2200, 550, 'sky');
+		sky = this.add.tileSprite(0, 0, 2200, 550, 'sky');
 		clouds = this.game.add.group();
 		mountains = this.game.add.group();
 		platforms = this.game.add.group();
@@ -64,7 +65,7 @@ Dream.Main.prototype = {
 	    }	   	
 
 		//Build world
-		ground = platforms.create(0, this.game.world.height - 45, 'ground');
+		ground = platforms.create(75, this.game.world.height - 45, 'ground');
 		ground.body.immovable = true;
 
 		//Set up player
@@ -72,10 +73,13 @@ Dream.Main.prototype = {
 		player.anchor.setTo(0.5, 0.5);
 		this.game.physics.arcade.enable(player);
 		this.game.camera.follow(player, Phaser.Camera.FOLLOW_PLATFORMER);
+		this.game.camera.deadzone = new Phaser.Rectangle(80, 0, 435, 0);
+   		this.game.camera.focusOnXY(0, 0);
 		player.body.gravity.y = 5000 * PLAYER_SCALE;
 		player.body.collideWorldBounds = true;
 		player.body.drag.set((3500 * PLAYER_SCALE), (2000 * PLAYER_SCALE));
 		player.body.maxVelocity.setTo((750 * PLAYER_SCALE), (2000 * PLAYER_SCALE));
+		player.body.collideWorldBounds = false;
 
 		//Set up bullets
 	    bullets = this.game.add.group();
@@ -100,8 +104,9 @@ Dream.Main.prototype = {
 		this.game.physics.arcade.collide(player, platforms);
 
 		//Use reticule for mouse
-		target.x = this.game.input.x - 22;
-		target.y = this.game.input.y - 12;
+		target.fixedToCamera = true;
+		target.cameraOffset.x = this.game.input.x - 22;
+		target.cameraOffset.y = this.game.input.y - 12;
 
 		//Spawn clouds
 		if(this.game.time.now > nextCloud)
@@ -115,6 +120,11 @@ Dream.Main.prototype = {
 			this.spawnMountain();
 		}
 
+		//Check for fall
+		if(player.y > this.game.world.height && fall === 0) {
+			fall = 1;
+			this.gameOver();
+		}
 
 		//Horizontal movement
 		if(button.left.isDown)
@@ -190,7 +200,7 @@ Dream.Main.prototype = {
 	},
 
 	spawnMountain: function() {
-		nextMountain = this.game.time.now + (cloudRate-7150);
+		nextMountain = this.game.time.now + (cloudRate-7000);
 		mountain = mountains.getFirstExists(false);
 		mountain.reset(2199, this.game.world.height-250, 'mountain');
 		mountain.body.gravity.x = 0;
@@ -199,9 +209,19 @@ Dream.Main.prototype = {
 		mountain.scale.setTo(mountainScale, mountainScale);
 	},
 
+	gameOver: function() {
+		gameover = this.game.add.sprite(150, 130, 'gameover');
+		gameover.fixedToCamera = true;
+		this.game.input.onDown.add(this.restartGame, this);
+	},
+
+	restartGame: function() {
+		fall = 0;
+		this.game.state.start('Menu');
+	},
+
 	render: function() {
 		//this.game.debug.text('test', 50,50);
 	}
-
 
 };
