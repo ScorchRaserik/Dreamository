@@ -13,6 +13,7 @@ Dream.Menu.prototype = {
 		this.load.image('target', 'assets/reticule.png');
 		this.load.image('mountain', 'assets/mountain.png');
 		this.load.image('gameover', 'assets/gameover.png');
+		this.load.image('enemy1', 'assets/enemy1.png');
 	},
 
 	create: function() {
