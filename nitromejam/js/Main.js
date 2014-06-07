@@ -93,6 +93,7 @@ Dream.Main.prototype = {
 
 	    //targetting
 	    target = this.add.sprite(this.game.input.x, this.game.input.y, 'target');
+	    target.fixedToCamera = true;
 
 
 		//Controls
@@ -104,7 +105,15 @@ Dream.Main.prototype = {
 		this.game.physics.arcade.collide(player, platforms);
 
 		//Use reticule for mouse
+<<<<<<< HEAD
+<<<<<<< HEAD
 		target.fixedToCamera = true;
+=======
+
+>>>>>>> FETCH_HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 		target.cameraOffset.x = this.game.input.x - 22;
 		target.cameraOffset.y = this.game.input.y - 12;
 
@@ -224,4 +233,12 @@ Dream.Main.prototype = {
 		//this.game.debug.text('test', 50,50);
 	}
 
+<<<<<<< HEAD
 };
+=======
+
+};
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
+>>>>>>> FETCH_HEAD
