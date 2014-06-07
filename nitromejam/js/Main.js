@@ -107,7 +107,11 @@ Dream.Main.prototype = {
 		//Use reticule for mouse
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		target.fixedToCamera = true;
+=======
+
+>>>>>>> FETCH_HEAD
 =======
 
 >>>>>>> FETCH_HEAD
@@ -239,6 +243,9 @@ Dream.Main.prototype = {
 
 };
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
+=======
 >>>>>>> FETCH_HEAD
 =======
 >>>>>>> FETCH_HEAD
