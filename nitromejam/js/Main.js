@@ -12,8 +12,9 @@ Dream.Main = function(game) {
 	enemyRate = 5000;
 	nextEnemy = 0;
 	enemyType = 0;
-	enemyFireRate = 1000;
+	enemyFireRate = 900;
 	test = null;
+	kills = 0;
 };
 
 Dream.Main.prototype = {
@@ -229,6 +230,28 @@ Dream.Main.prototype = {
 
 		//enemy movement
 		enemies.forEachAlive(this.flyingUpdate, this, player);
+
+		//Wave control
+		if(kills >= 5)
+		{
+			enemyRate = 2500;
+		}
+		if(kills >= 15)
+		{
+			enemyRate = 1000;
+		}
+		if(kills >= 30)
+		{
+			enemyRate = 500;
+		}
+		if(kills >= 50)
+		{
+			//enemyRate = 1000;
+		}
+		if(kills >= 75)
+		{
+			//enemyRate = 500;
+		}
 	},
 
 	fire: function() {
@@ -321,6 +344,7 @@ Dream.Main.prototype = {
 	playerHitEnemy: function(bullet, enemy) {
 		enemy.kill();
 		bullet.kill();
+		kills += 1;
 	},
 
 	flyingUpdate: function(enemy, player){
@@ -359,6 +383,6 @@ Dream.Main.prototype = {
 	},
 
 	render: function() {
-		//this.game.debug.text('test: ' + test, 50,50);
+		this.game.debug.text('Kills: ' + kills + ' Enemy Rate: ' + enemyRate, 50,50);
 	}
 };
