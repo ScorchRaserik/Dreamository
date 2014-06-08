@@ -1,4 +1,6 @@
-var Dream = {};
+var Dream = {
+	score: 0
+};
 Dream.Menu = function(game) {};
 
 Dream.Menu.prototype = {
@@ -17,6 +19,7 @@ Dream.Menu.prototype = {
 		this.load.image('enemy2', 'assets/enemy2.png');
 		this.load.image('enemy3', 'assets/enemy3.png');
 		this.load.image('eshot', 'assets/eshot.png');
+		this.load.image('health', 'assets/health.png');
 	},
 
 	create: function() {

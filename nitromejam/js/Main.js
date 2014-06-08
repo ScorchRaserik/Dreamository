@@ -21,6 +21,7 @@ Dream.Main.prototype = {
 
 	preload: function() {
 		nextEnemy = this.game.time.now + 5000;
+		kills = 0;
 	},
 
 	create: function() {
@@ -107,6 +108,7 @@ Dream.Main.prototype = {
 		player.body.drag.set((3500 * PLAYER_SCALE), (2000 * PLAYER_SCALE));
 		player.body.maxVelocity.setTo((750 * PLAYER_SCALE), (2000 * PLAYER_SCALE));
 		player.body.collideWorldBounds = false;
+		player.health = 100;
 
 		//Set up player bullets
 	    bullets = this.game.add.group();
@@ -118,17 +120,37 @@ Dream.Main.prototype = {
 	    bullets.setAll('outOfBoundsKill', true);
 	    bullets.setAll('checkWorldBounds', true);
 
+	    //Set up health
+	    hp = this.game.add.group();
+	    hp.enableBody = true;
+	    hp.physicsBodyType = Phaser.Physics.ARCADE;
+	    hp.createMultiple(10, 'health', 0, false);
+	    hp.setAll('anchor.x', 0.5);
+	    hp.setAll('anchor.y', 0.5);
+	    hp.setAll('outOfBoundsKill', true);
+	    hp.setAll('checkWorldBounds', true);
+	    hp.setAll('body.gravity.y', 5000);
+	    hp.setAll('body.drag.y', 2000);
+	    hp.setAll('body.maxVelocity.y', 2000);
+
 	    //targetting
 	    target = this.add.sprite(this.game.input.x, this.game.input.y, 'target');
 
 
 		//Controls
 		button = this.game.input.keyboard.createCursorKeys();
+
+		//Score
+		style = { font: "20px Arial" };
+		info = this.game.add.text(25, 25, 'HEALTH: ' + player.health + '\nSCORE: ' + kills, style)
+		info.fixedToCamera = true;
 	},
 
 	update: function() {
 		//Collision detection
 		this.game.physics.arcade.collide(player, platforms);
+		this.game.physics.arcade.collide(hp, platforms);
+		this.game.physics.arcade.overlap(player, hp, this.healthPickup, null, this);
 		this.game.physics.arcade.overlap(player, enemies, this.enemyHitPlayer, null, this);
 		this.game.physics.arcade.overlap(player, enemyBullets, this.bulletHitPlayer,  null, this);
 		this.game.physics.arcade.overlap(bullets, enemies, this.playerHitEnemy, null, this);
@@ -159,6 +181,12 @@ Dream.Main.prototype = {
 		//Check for fall
 		if(player.y > this.game.world.height && fall === 0) {
 			fall = 1;
+			this.gameOver();
+		}
+
+		//Check for 0 health
+		if(player.health <= 0)
+		{
 			this.gameOver();
 		}
 
@@ -252,6 +280,9 @@ Dream.Main.prototype = {
 		{
 			//enemyRate = 500;
 		}
+
+		//Score display
+		info.setText("HEALTH: " + player.health + "\nSCORE: " + kills);
 	},
 
 	fire: function() {
@@ -319,6 +350,7 @@ Dream.Main.prototype = {
 			player.body.velocity.x = 1000 * PLAYER_SCALE;
 		}
 		enemy.kill();
+		player.health -= 5;
 	},
 
 	bulletHitPlayer: function(player, bullet) {
@@ -339,12 +371,33 @@ Dream.Main.prototype = {
 			player.body.velocity.y = 1000 * PLAYER_SCALE;
 		}
 		bullet.kill();
+		player.health -= 5;
 	},
 
 	playerHitEnemy: function(bullet, enemy) {
+		//25% chance to drop health
+		if(Math.random() > .75)
+		{
+			this.spawnHealth(enemy);
+		}
 		enemy.kill();
 		bullet.kill();
 		kills += 1;
+	},
+
+	spawnHealth: function(enemy) {
+		health = hp.getFirstExists(false);
+		health.reset(enemy.x, enemy.y);
+		health.body.velocity.y = -500;
+	},
+
+	healthPickup: function(player, health) {
+		player.health += 20;
+		if(player.health > 100)
+		{
+			player.health = 100;
+		}
+		health.kill();
 	},
 
 	flyingUpdate: function(enemy, player){
@@ -372,9 +425,13 @@ Dream.Main.prototype = {
 	},
 
 	gameOver: function() {
-		gameover = this.game.add.sprite(150, 130, 'gameover');
-		gameover.fixedToCamera = true;
-		this.game.input.onDown.add(this.restartGame, this);
+		this.game.score = kills;
+		kills = 0;
+		fall = 0;
+		this.game.state.start('Fail');
+		//gameover = this.game.add.sprite(150, 130, 'gameover');
+		//gameover.fixedToCamera = true;
+		//this.game.input.onDown.add(this.restartGame, this);
 	},
 
 	restartGame: function() {
@@ -383,6 +440,6 @@ Dream.Main.prototype = {
 	},
 
 	render: function() {
-		this.game.debug.text('Kills: ' + kills + ' Enemy Rate: ' + enemyRate, 50,50);
+		//this.game.debug.text('Score: ' + this.game.score, 100,100);
 	}
 };
