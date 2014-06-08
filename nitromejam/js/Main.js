@@ -11,6 +11,7 @@ Dream.Main = function(game) {
 	enemies = null;
 	enemyRate = 5000;
 	nextEnemy = 0;
+	enemyType = 0;
 };
 
 Dream.Main.prototype = {
@@ -240,8 +241,17 @@ Dream.Main.prototype = {
 
 	spawnEnemy: function() {
 		nextEnemy = this.game.time.now + enemyRate;
-		straight = enemies.create(player.body.x + 550, player.body.y + player.body.halfHeight - 10, 'enemy1');
-		straight.body.velocity.x = -300;
+		enemyType = Math.random();
+		if(enemyType < 0.33)
+		{
+			straightLeft = enemies.create(player.body.x + 550, player.body.y + player.body.halfHeight - 10, 'enemy1');
+			straightLeft.body.velocity.x = -300;
+		}
+		else if(enemyType > 0.66)
+		{
+			straightRight = enemies.create(player.body.x - 550, player.body.y + player.body.halfHeight - 10, 'enemy2');
+			straightRight.body.velocity.x = 300;
+		}
 	},
 
 	enemyHitPlayer: function(player, enemy) {
@@ -249,6 +259,10 @@ Dream.Main.prototype = {
 		if(enemy.body.velocity.x < 0)
 		{
 			player.body.velocity.x = -1000 * PLAYER_SCALE;
+		}
+		if(enemy.body.velocity.x > 0)
+		{
+			player.body.velocity.x = 1000 * PLAYER_SCALE;
 		}
 		enemy.kill();
 	},
@@ -265,7 +279,7 @@ Dream.Main.prototype = {
 	},
 
 	render: function() {
-		//this.game.debug.text('test', 50,50);
+		this.game.debug.text('test: ' + enemyType, 50,50);
 	}
 
 };
