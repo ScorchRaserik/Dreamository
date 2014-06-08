@@ -15,6 +15,8 @@ Dream.Menu.prototype = {
 		this.load.image('gameover', 'assets/gameover.png');
 		this.load.image('enemy1', 'assets/enemy1.png');
 		this.load.image('enemy2', 'assets/enemy2.png');
+		this.load.image('enemy3', 'assets/enemy3.png');
+		this.load.image('eshot', 'assets/eshot.png');
 	},
 
 	create: function() {

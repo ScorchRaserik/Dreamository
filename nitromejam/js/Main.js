@@ -12,6 +12,8 @@ Dream.Main = function(game) {
 	enemyRate = 5000;
 	nextEnemy = 0;
 	enemyType = 0;
+	enemyFireRate = 1000;
+	test = null;
 };
 
 Dream.Main.prototype = {
@@ -80,6 +82,17 @@ Dream.Main.prototype = {
 		enemies = this.game.add.group();
 		enemies.enableBody = true;
     	enemies.physicsBodyType = Phaser.Physics.ARCADE;
+    	enemies.setAll('nextShot', null);
+
+    	//Set up enemy bullets
+    	enemyBullets = this.game.add.group();
+	    enemyBullets.enableBody = true;
+	    enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
+	    enemyBullets.createMultiple(100, 'eshot', 0, false);
+	    enemyBullets.setAll('anchor.x', 0.5);
+	    enemyBullets.setAll('anchor.y', 0.5);
+	    enemyBullets.setAll('outOfBoundsKill', true);
+	    enemyBullets.setAll('checkWorldBounds', true);
 
 		//Set up player
 		player = this.add.sprite(226, this.game.world.height - 75, 'player');
@@ -94,7 +107,7 @@ Dream.Main.prototype = {
 		player.body.maxVelocity.setTo((750 * PLAYER_SCALE), (2000 * PLAYER_SCALE));
 		player.body.collideWorldBounds = false;
 
-		//Set up bullets
+		//Set up player bullets
 	    bullets = this.game.add.group();
 	    bullets.enableBody = true;
 	    bullets.physicsBodyType = Phaser.Physics.ARCADE;
@@ -116,6 +129,8 @@ Dream.Main.prototype = {
 		//Collision detection
 		this.game.physics.arcade.collide(player, platforms);
 		this.game.physics.arcade.overlap(player, enemies, this.enemyHitPlayer, null, this);
+		this.game.physics.arcade.overlap(player, enemyBullets, this.bulletHitPlayer,  null, this);
+		this.game.physics.arcade.overlap(bullets, enemies, this.playerHitEnemy, null, this);
 
 		//Use reticule for mouse
 		target.fixedToCamera = true;
@@ -194,6 +209,10 @@ Dream.Main.prototype = {
 		{
 			canJump = true;
 		}
+		else
+		{
+			canJump = false;
+		}
 
 		//Airborn sideways movement affected
 		if(!player.body.touching.down)
@@ -207,6 +226,9 @@ Dream.Main.prototype = {
 
 		//Mouse click
 		this.game.input.onDown.add(this.fire, this);
+
+		//enemy movement
+		enemies.forEachAlive(this.flyingUpdate, this, player);
 	},
 
 	fire: function() {
@@ -252,6 +274,15 @@ Dream.Main.prototype = {
 			straightRight = enemies.create(player.body.x - 550, player.body.y + player.body.halfHeight - 10, 'enemy2');
 			straightRight.body.velocity.x = 300;
 		}
+		else
+		{
+			flying = enemies.create(player.body.x + 550, 100, 'enemy3');
+			flying.anchor.setTo(0.5, 0.5);
+			flying.body.acceleration.x = -1500;
+			flying.body.maxVelocity.x = 750;
+			flying.body.drag.x = 2000;
+			flying.nextShot = this.game.time.now + 3000;
+		}
 	},
 
 	enemyHitPlayer: function(player, enemy) {
@@ -267,6 +298,55 @@ Dream.Main.prototype = {
 		enemy.kill();
 	},
 
+	bulletHitPlayer: function(player, bullet) {
+		if(bullet.body.velocity.x < 0)
+		{
+			player.body.velocity.x = -1000 * PLAYER_SCALE;
+		}
+		if(bullet.body.velocity.x > 0)
+		{
+			player.body.velocity.x = 1000 * PLAYER_SCALE;
+		}
+		if(bullet.body.velocity.y < 0)
+		{
+			player.body.velocity.y = -1000 * PLAYER_SCALE;
+		}
+		if(bullet.body.velocity.y > 0)
+		{
+			player.body.velocity.y = 1000 * PLAYER_SCALE;
+		}
+		bullet.kill();
+	},
+
+	playerHitEnemy: function(bullet, enemy) {
+		enemy.kill();
+		bullet.kill();
+	},
+
+	flyingUpdate: function(enemy, player){
+		if(enemy.body.y < 250)
+		{
+			//Change directions
+			if(enemy.body.x > player.body.x)
+			{
+				enemy.body.acceleration.x = -1500;
+			}
+			else
+			{
+				enemy.body.acceleration.x = 1500;
+			}
+
+			//Shoot
+			if(this.game.time.now > enemy.nextShot && enemyBullets.countDead() > 0)
+			{
+				enemy.nextShot = this.game.time.now + enemyFireRate;
+		        bullet = enemyBullets.getFirstExists(false);
+		        bullet.reset(enemy.x, enemy.y);
+		        bullet.rotation = this.game.physics.arcade.moveToObject(bullet, player, 300);
+			}
+		}
+	},
+
 	gameOver: function() {
 		gameover = this.game.add.sprite(150, 130, 'gameover');
 		gameover.fixedToCamera = true;
@@ -279,7 +359,6 @@ Dream.Main.prototype = {
 	},
 
 	render: function() {
-		this.game.debug.text('test: ' + enemyType, 50,50);
+		//this.game.debug.text('test: ' + test, 50,50);
 	}
-
 };
