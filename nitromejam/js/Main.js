@@ -110,7 +110,6 @@ Dream.Main.prototype = {
 		player.body.maxVelocity.setTo((750 * PLAYER_SCALE), (2000 * PLAYER_SCALE));
 		player.body.collideWorldBounds = false;
 		player.health = 100;
-	    player.body.setSize(20, 32, 5, 16);
 		player.animations.add('left', [0, 1, 2, 3], 10, true);
     	player.animations.add('turn', [4], 20, true);
     	player.animations.add('right', [5, 6, 7, 8], 10, true);
@@ -132,8 +131,6 @@ Dream.Main.prototype = {
 	    hp.createMultiple(10, 'health', 0, false);
 	    hp.setAll('anchor.x', 0.5);
 	    hp.setAll('anchor.y', 0.5);
-	    //hp.setAll('outOfBoundsKill', true);
-	    //hp.setAll('checkWorldBounds', false);
 	    hp.setAll('body.gravity.y', 5000);
 	    hp.setAll('body.drag.y', 2000);
 	    hp.setAll('body.maxVelocity.y', 2000);
@@ -236,7 +233,7 @@ Dream.Main.prototype = {
 	    {
 	        //Stop
 	    	player.body.acceleration.x = 0;
-	    	player.frame = 5;
+	    	player.frame = 4;
 	    }
 
 	    //Vertical movement
@@ -352,7 +349,7 @@ Dream.Main.prototype = {
 	    {
 	        nextFire = this.game.time.now + fireRate;
 	        bullet = bullets.getFirstExists(false);
-	        bullet.reset(player.x, player.y);
+	        bullet.reset(player.x - 10, player.y - 16);
 	        bullet.rotation = this.game.physics.arcade.moveToPointer(bullet, 1000, this.game.input.activePointer);
 	    }
 	},

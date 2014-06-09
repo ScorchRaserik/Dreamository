@@ -36,6 +36,7 @@ Dream.Intro.prototype = {
 		this.load.image('w9', 'assets/w9.png');
 		this.load.image('w10', 'assets/w10.png');
 		this.load.image('wI', 'assets/wI.png');
+		this.load.image('wake', 'assets/wake.png');
 
 	},
 
