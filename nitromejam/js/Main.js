@@ -135,6 +135,7 @@ Dream.Main.prototype = {
 
 	    //targetting
 	    target = this.add.sprite(this.game.input.x, this.game.input.y, 'target');
+	    target.anchor.setTo(0.5, 0.5);
 
 
 		//Controls
@@ -157,8 +158,8 @@ Dream.Main.prototype = {
 
 		//Use reticule for mouse
 		target.fixedToCamera = true;
-		target.cameraOffset.x = this.game.input.x - 22;
-		target.cameraOffset.y = this.game.input.y - 12;
+		target.cameraOffset.x = this.game.input.x;
+		target.cameraOffset.y = this.game.input.y;
 
 		//Spawn clouds
 		if(this.game.time.now > nextCloud)
@@ -261,25 +262,25 @@ Dream.Main.prototype = {
 		enemies.forEachAlive(this.flyingUpdate, this, player);
 
 		//Wave control
-		if(kills >= 10)
+		if(kills >= 5)
 		{
 			enemyRate = 3500;
 		}
-		if(kills >= 15)
+		if(kills >= 10)
 		{
-			enemyRate = 2250;
+			enemyRate = 2500;
 		}
 		if(kills >= 20)
 		{
-			enemyRate = 2000;
+			enemyRate = 1500;
 		}
 		if(kills >= 30)
 		{
-			enemyRate = 1500;
+			enemyRate = 1000;
 		}
 		if(kills >= 50)
 		{
-			enemyRate = 1000;
+			enemyRate = 900;
 		}
 		if(kills >= 65)
 		{
