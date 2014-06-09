@@ -300,7 +300,7 @@ Dream.Main.prototype = {
 		}
 		if(kills >= 100)
 		{
-			enemyRate = 100;
+			enemyRate = 250;
 		}
 
 		//Score display
@@ -397,8 +397,8 @@ Dream.Main.prototype = {
 	},
 
 	playerHitEnemy: function(bullet, enemy) {
-		//25% chance to drop health
-		if(Math.random() > .74)
+		//10% chance to drop health
+		if(Math.random() > .9)
 		{
 			this.spawnHealth(enemy);
 		}
