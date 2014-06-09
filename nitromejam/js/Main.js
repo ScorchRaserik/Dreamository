@@ -298,9 +298,9 @@ Dream.Main.prototype = {
 		{
 			enemyRate = 500;
 		}
-		if(kills === 100)
+		if(kills >= 100)
 		{
-			//
+			enemyRate = 100;
 		}
 
 		//Score display
@@ -451,7 +451,6 @@ Dream.Main.prototype = {
 		fader.alpha = 0;
 		this.game.add.tween(fader).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 		this.game.score = kills;
-		for (var i = 0; i < 10000; i++) {}
 		kills = 0;
 		fall = 0;
 		this.game.state.start('Fail');
