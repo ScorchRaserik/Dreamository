@@ -27,6 +27,15 @@ Dream.Intro.prototype = {
 		this.load.image('intro', 'assets/intro.png');
 		this.load.image('w1', 'assets/w1.png');
 		this.load.image('w2', 'assets/w2.png');
+		this.load.image('w3', 'assets/w3.png');
+		this.load.image('w4', 'assets/w4.png');
+		this.load.image('w5', 'assets/w5.png');	
+		this.load.image('w6', 'assets/w6.png');
+		this.load.image('w7', 'assets/w7.png');
+		this.load.image('w8', 'assets/w8.png');
+		this.load.image('w9', 'assets/w9.png');
+		this.load.image('w10', 'assets/w10.png');
+		this.load.image('wI', 'assets/wI.png');
 
 	},
 
