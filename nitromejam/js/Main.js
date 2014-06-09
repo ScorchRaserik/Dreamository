@@ -9,10 +9,10 @@ Dream.Main = function(game) {
 	cloudRate = 10000;
 	fall = 0;
 	enemies = null;
-	enemyRate = 5000;
+	enemyRate = 4000;
 	nextEnemy = 0;
 	enemyType = 0;
-	enemyFireRate = 900;
+	enemyFireRate = 1000;
 	test = null;
 	kills = 0;
 };
@@ -74,7 +74,7 @@ Dream.Main.prototype = {
 			mTemp.body.gravity.x = 0;
 
 			mTemp.body.velocity.x = -45 - (Math.random() * 8);
-	    }	   	
+	    }	
 
 		//Build world
 		ground = platforms.create(75, this.game.world.height - 45, 'ground');
@@ -127,8 +127,8 @@ Dream.Main.prototype = {
 	    hp.createMultiple(10, 'health', 0, false);
 	    hp.setAll('anchor.x', 0.5);
 	    hp.setAll('anchor.y', 0.5);
-	    hp.setAll('outOfBoundsKill', true);
-	    hp.setAll('checkWorldBounds', true);
+	    //hp.setAll('outOfBoundsKill', true);
+	    //hp.setAll('checkWorldBounds', false);
 	    hp.setAll('body.gravity.y', 5000);
 	    hp.setAll('body.drag.y', 2000);
 	    hp.setAll('body.maxVelocity.y', 2000);
@@ -179,7 +179,8 @@ Dream.Main.prototype = {
 		}
 
 		//Check for fall
-		if(player.y > this.game.world.height && fall === 0) {
+		if(player.y > this.game.world.height && fall === 0) 
+		{
 			fall = 1;
 			this.gameOver();
 		}
@@ -222,7 +223,7 @@ Dream.Main.prototype = {
 	    }
 
 	    //Vertical movement
-	    if(button.up.justPressed(250) && canJump == true)
+	    if((button.up.justPressed(250)) && canJump == true)
 	    {
 	    	player.body.velocity.y = -1000 * PLAYER_SCALE;
 	    	player.body.gravity.y = 500 * PLAYER_SCALE;
@@ -260,25 +261,45 @@ Dream.Main.prototype = {
 		enemies.forEachAlive(this.flyingUpdate, this, player);
 
 		//Wave control
-		if(kills >= 5)
+		if(kills >= 10)
 		{
-			enemyRate = 2500;
+			enemyRate = 3500;
 		}
 		if(kills >= 15)
 		{
-			enemyRate = 1000;
+			enemyRate = 2250;
+		}
+		if(kills >= 20)
+		{
+			enemyRate = 2000;
 		}
 		if(kills >= 30)
 		{
-			enemyRate = 500;
+			enemyRate = 1500;
 		}
 		if(kills >= 50)
 		{
-			//enemyRate = 1000;
+			enemyRate = 1000;
+		}
+		if(kills >= 65)
+		{
+			enemyRate = 800;
 		}
 		if(kills >= 75)
 		{
-			//enemyRate = 500;
+			enemyRate = 700;
+		}
+		if(kills >= 85)
+		{
+			enemyRate = 600;
+		}
+		if(kills >= 90)
+		{
+			enemyRate = 500;
+		}
+		if(kills === 100)
+		{
+			//
 		}
 
 		//Score display
@@ -321,21 +342,21 @@ Dream.Main.prototype = {
 		if(enemyType < 0.33)
 		{
 			straightLeft = enemies.create(player.body.x + 550, player.body.y + player.body.halfHeight - 10, 'enemy1');
-			straightLeft.body.velocity.x = -300;
+			straightLeft.body.velocity.x = -260;
 		}
 		else if(enemyType > 0.66)
 		{
 			straightRight = enemies.create(player.body.x - 550, player.body.y + player.body.halfHeight - 10, 'enemy2');
-			straightRight.body.velocity.x = 300;
+			straightRight.body.velocity.x = 260;
 		}
 		else
 		{
-			flying = enemies.create(player.body.x + 550, 100, 'enemy3');
+			flying = enemies.create(player.body.x + 550, 150, 'enemy3');
 			flying.anchor.setTo(0.5, 0.5);
-			flying.body.acceleration.x = -1500;
-			flying.body.maxVelocity.x = 750;
+			flying.body.acceleration.x = -1000;
+			flying.body.maxVelocity.x = 600;
 			flying.body.drag.x = 2000;
-			flying.nextShot = this.game.time.now + 3000;
+			flying.nextShot = this.game.time.now + 3700;
 		}
 	},
 
@@ -376,7 +397,7 @@ Dream.Main.prototype = {
 
 	playerHitEnemy: function(bullet, enemy) {
 		//25% chance to drop health
-		if(Math.random() > .75)
+		if(Math.random() > .74)
 		{
 			this.spawnHealth(enemy);
 		}
@@ -406,11 +427,11 @@ Dream.Main.prototype = {
 			//Change directions
 			if(enemy.body.x > player.body.x)
 			{
-				enemy.body.acceleration.x = -1500;
+				enemy.body.acceleration.x = -1000;
 			}
 			else
 			{
-				enemy.body.acceleration.x = 1500;
+				enemy.body.acceleration.x = 1000;
 			}
 
 			//Shoot
@@ -425,18 +446,17 @@ Dream.Main.prototype = {
 	},
 
 	gameOver: function() {
+		var fader = this.game.add.sprite(0, 0, 'fade');
+		fader.alpha = 0;
+		this.game.add.tween(fader).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 		this.game.score = kills;
+		for (var i = 0; i < 10000; i++) {}
 		kills = 0;
 		fall = 0;
 		this.game.state.start('Fail');
 		//gameover = this.game.add.sprite(150, 130, 'gameover');
 		//gameover.fixedToCamera = true;
 		//this.game.input.onDown.add(this.restartGame, this);
-	},
-
-	restartGame: function() {
-		fall = 0;
-		this.game.state.start('Menu');
 	},
 
 	render: function() {

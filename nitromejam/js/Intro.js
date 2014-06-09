@@ -1,6 +1,10 @@
-Dream.Menu = function(game) {};
+var Dream = {
+	score: 0
+};
 
-Dream.Menu.prototype = {
+Dream.Intro = function(game) {};
+
+Dream.Intro.prototype = {
 
 	preload: function() {
 		this.load.image('menu', 'assets/menu.png');
@@ -18,10 +22,33 @@ Dream.Menu.prototype = {
 		this.load.image('eshot', 'assets/eshot.png');
 		this.load.image('health', 'assets/health.png');
 		this.load.image('fade', 'assets/fade.png');
+		this.load.image('intro', 'assets/intro.png');
 	},
 
 	create: function() {
-		this.add.sprite(0, 0, 'menu');
+		this.add.sprite(0, 0, 'sky');
+
+		//Set up clouds
+		clouds = this.game.add.group();
+		clouds.enableBody = true;
+		clouds.createMultiple(30, 'cloud', 0, false);
+	   	clouds.setAll('outOfBoundsKill', true);
+	   	clouds.setAll('checkWorldBounds', true);
+
+	    for (var i = 0; i < 50; i++) 
+	    {
+	    	// create a star inside of the 'stars' group
+			var cloudTemp = clouds.create(i * 150, 50 + (Math.random() * 420), 'cloud');
+
+			// let gravity do its thing
+			cloudTemp.body.gravity.x = 0;
+
+			// this gives each star a slightly random bounce value
+			cloudTemp.body.velocity.x = -10 - (Math.random() * 15);
+	    }
+
+	    this.add.sprite(0, 0, 'intro');
+
 	},
 
 	update: function() {
@@ -29,6 +56,6 @@ Dream.Menu.prototype = {
 	},
 
 	startGame: function() {
-		this.game.state.start('Main');
+		this.game.state.start('Menu');
 	}
 };
