@@ -352,7 +352,7 @@ Dream.Main.prototype = {
 		}
 		else
 		{
-			flying = enemies.create(player.body.x + 550, 150, 'enemy3');
+			flying = enemies.create(player.body.x + 550, 125 + (Math.random() * 25), 'enemy3');
 			flying.anchor.setTo(0.5, 0.5);
 			flying.body.acceleration.x = -1000;
 			flying.body.maxVelocity.x = 600;
