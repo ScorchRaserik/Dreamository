@@ -15,6 +15,7 @@ Dream.Main = function(game) {
 	enemyFireRate = 1000;
 	test = null;
 	kills = 0;
+	wave = 0;
 };
 
 Dream.Main.prototype = {
@@ -145,6 +146,10 @@ Dream.Main.prototype = {
 		style = { font: "20px Arial" };
 		info = this.game.add.text(25, 25, 'HEALTH: ' + player.health + '\nSCORE: ' + kills, style)
 		info.fixedToCamera = true;
+
+		//Setup wave info
+		var w = this.game.add.sprite(395, 10, 'w1');
+		w.fixedToCamera = true;
 	},
 
 	update: function() {
@@ -261,9 +266,15 @@ Dream.Main.prototype = {
 		//enemy movement
 		enemies.forEachAlive(this.flyingUpdate, this, player);
 
-		//Wave control
-		if(kills >= 5)
+		if(wave === 0) 
 		{
+			wave = 1;
+		}
+		//Wave control
+		if(kills >= 5 && wave === 1)
+		{
+			wave = 2;
+			w = this.game.add.sprite(395, 10, 'w2');
 			enemyRate = 3500;
 		}
 		if(kills >= 10)
@@ -298,9 +309,9 @@ Dream.Main.prototype = {
 		{
 			enemyRate = 500;
 		}
-		if(kills >= 100)
+		if(kills === 100)
 		{
-			enemyRate = 100;
+			//
 		}
 
 		//Score display
@@ -342,22 +353,41 @@ Dream.Main.prototype = {
 		enemyType = Math.random();
 		if(enemyType < 0.33)
 		{
-			straightLeft = enemies.create(player.body.x + 550, player.body.y + player.body.halfHeight - 10, 'enemy1');
+			straightLeft = enemies.create(player.body.x + 550, player.body.y + player.body.halfHeight - 20, 'enemy1');
 			straightLeft.body.velocity.x = -260;
 		}
 		else if(enemyType > 0.66)
 		{
-			straightRight = enemies.create(player.body.x - 550, player.body.y + player.body.halfHeight - 10, 'enemy2');
+			straightRight = enemies.create(player.body.x - 550, player.body.y + player.body.halfHeight - 20, 'enemy2');
 			straightRight.body.velocity.x = 260;
 		}
 		else
 		{
-			flying = enemies.create(player.body.x + 550, 150, 'enemy3');
-			flying.anchor.setTo(0.5, 0.5);
-			flying.body.acceleration.x = -1000;
-			flying.body.maxVelocity.x = 600;
-			flying.body.drag.x = 2000;
-			flying.nextShot = this.game.time.now + 3700;
+			if (enemyType < .44 ) {
+				flying = enemies.create(player.body.x + 550, 125 + (Math.random() * 25), 'enemy3');
+				flying.anchor.setTo(0.5, 0.5);
+				flying.body.acceleration.x = -1000;
+				flying.body.maxVelocity.x = 600;
+				flying.body.drag.x = 2000;
+				flying.nextShot = this.game.time.now + 3700;
+			}
+			if (enemyType > .55) {
+				flying = enemies.create(player.body.x + 550, 125 + (Math.random() * 25), 'enemy3v2');
+				flying.anchor.setTo(0.5, 0.5);
+				flying.body.acceleration.x = -1000;
+				flying.body.maxVelocity.x = 600;
+				flying.body.drag.x = 2000;
+				flying.nextShot = this.game.time.now + 3700;
+			}
+			else {
+				flying = enemies.create(player.body.x + 550, 125 + (Math.random() * 25), 'enemy3v3');
+				flying.anchor.setTo(0.5, 0.5);
+				flying.body.acceleration.x = -1000;
+				flying.body.maxVelocity.x = 600;
+				flying.body.drag.x = 2000;
+				flying.nextShot = this.game.time.now + 3700;
+			}
+
 		}
 	},
 

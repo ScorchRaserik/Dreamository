@@ -19,10 +19,15 @@ Dream.Intro.prototype = {
 		this.load.image('enemy1', 'assets/enemy1.png');
 		this.load.image('enemy2', 'assets/enemy2.png');
 		this.load.image('enemy3', 'assets/enemy3.png');
+		this.load.image('enemy3v2', 'assets/enemy3v2.png');
+		this.load.image('enemy3v3', 'assets/enemy3v3.png');
 		this.load.image('eshot', 'assets/eshot.png');
 		this.load.image('health', 'assets/health.png');
 		this.load.image('fade', 'assets/fade.png');
 		this.load.image('intro', 'assets/intro.png');
+		this.load.image('w1', 'assets/w1.png');
+		this.load.image('w2', 'assets/w2.png');
+
 	},
 
 	create: function() {
