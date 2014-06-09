@@ -311,11 +311,7 @@ Dream.Main.prototype = {
 		}
 		if(kills === 100)
 		{
-<<<<<<< HEAD
 			//
-=======
-			enemyRate = 250;
->>>>>>> FETCH_HEAD
 		}
 
 		//Score display
@@ -367,7 +363,6 @@ Dream.Main.prototype = {
 		}
 		else
 		{
-<<<<<<< HEAD
 			if (enemyType < .44 ) {
 				flying = enemies.create(player.body.x + 550, 125 + (Math.random() * 25), 'enemy3');
 				flying.anchor.setTo(0.5, 0.5);
@@ -393,14 +388,6 @@ Dream.Main.prototype = {
 				flying.nextShot = this.game.time.now + 3700;
 			}
 
-=======
-			flying = enemies.create(player.body.x + 550, 125 + (Math.random() * 25), 'enemy3');
-			flying.anchor.setTo(0.5, 0.5);
-			flying.body.acceleration.x = -1000;
-			flying.body.maxVelocity.x = 600;
-			flying.body.drag.x = 2000;
-			flying.nextShot = this.game.time.now + 3700;
->>>>>>> FETCH_HEAD
 		}
 	},
 
@@ -440,8 +427,8 @@ Dream.Main.prototype = {
 	},
 
 	playerHitEnemy: function(bullet, enemy) {
-		//10% chance to drop health
-		if(Math.random() > .9)
+		//25% chance to drop health
+		if(Math.random() > .74)
 		{
 			this.spawnHealth(enemy);
 		}
