@@ -1,0 +1,31 @@
+<!doctype html> 
+<html lang="en">
+<head> 
+	<meta charset="UTF-8" />
+    <title>Dreaming</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+    <script type="text/javascript" src="js/phaser.min.js"></script>
+    <script type="text/javascript" src="js/Intro.js"></script>
+    <script type="text/javascript" src="js/Menu.js"></script>
+    <script type="text/javascript" src="js/Main.js"></script>
+    <script type="text/javascript" src="js/Fail.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+
+(function() {
+	var game = new Phaser.Game(550, 550, Phaser.AUTO, 'game');
+    game.state.add('Intro', Dream.Intro);
+	game.state.add('Menu', Dream.Menu);
+	game.state.add('Main', Dream.Main);
+    game.state.add('Fail', Dream.Fail);
+	game.state.start('Intro');
+})();
+
+</script>
+</body>
+</html>
