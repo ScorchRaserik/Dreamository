@@ -465,8 +465,11 @@ Dream.Main.prototype = {
 
 	spawnHealth: function(enemy) {
 		health = hp.getFirstExists(false);
-		health.reset(enemy.x, enemy.y);
-		health.body.velocity.y = -500;
+		if(health)
+		{
+			health.reset(enemy.x, enemy.y);
+			health.body.velocity.y = -500;
+		}
 	},
 
 	healthPickup: function(player, health) {
