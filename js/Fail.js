@@ -1,4 +1,6 @@
-Dream.Fail = function(game) {};
+Dream.Fail = function(game) {
+	inputDelay = 0;
+};
 
 Dream.Fail.prototype = {
 
@@ -7,10 +9,15 @@ Dream.Fail.prototype = {
 		this.add.sprite(150, 185, 'gameover');
 		style = { font: "50px Arial", align: "center", fill: "#ffffff"};
 		text = this.game.add.text(162, 400, 'SCORE: ' + this.game.score, style);
+		
+		inputDelay = this.game.time.now + 3000;
 	},
 
 	update: function() {
-		this.game.input.onDown.add(this.restartGame, this);
+		if(this.game.time.now > inputDelay)
+		{
+			this.game.input.onDown.add(this.restartGame, this);
+		}
 	},
 
 	restartGame: function() {
