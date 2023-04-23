@@ -509,6 +509,8 @@ Dream.Main.prototype = {
 		this.game.score = kills;
 		kills = 0;
 		fall = 0;
+		enemyRate = 4000;
+		wave = 0;
 		this.game.state.start('Fail');
 		//gameover = this.game.add.sprite(150, 130, 'gameover');
 		//gameover.fixedToCamera = true;
