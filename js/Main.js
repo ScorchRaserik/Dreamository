@@ -397,7 +397,7 @@ Dream.Main.prototype = {
 				flying.body.drag.x = 2000;
 				flying.nextShot = this.game.time.now + 3700;
 			}
-			if (enemyType > .55) {
+			else if (enemyType > .55) {
 				flying = enemies.create(player.body.x + 550, 125 + (Math.random() * 25), 'enemy3v2');
 				flying.anchor.setTo(0.5, 0.5);
 				flying.body.acceleration.x = -1000;
